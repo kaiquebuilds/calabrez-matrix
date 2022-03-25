@@ -1,3 +1,7 @@
-const App = () => <h1>It works!</h1>
+import HomePage from './pages/HomePage'
+
+const App = () => {
+  return <HomePage />
+}
 
 export default App
