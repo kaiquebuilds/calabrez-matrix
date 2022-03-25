@@ -1,6 +1,66 @@
 import PageHeader from '../components/PageHeader'
 
+import { useEffect, useState } from 'react'
+
+let lastId = 0
+
 const HomePage = () => {
+  const [tasks, setTasks] = useState([])
+  const [inputValues, setInputValues] = useState({
+    description: '',
+    urgency: 0,
+    importance: 0,
+  })
+
+  const onDescriptionChange = (e) => {
+    setInputValues((current) => ({
+      ...current,
+      description: e.target.value,
+    }))
+  }
+
+  const onUrgencyChange = (e) => {
+    setInputValues((current) => ({
+      ...current,
+      urgency: e.target.value,
+    }))
+  }
+
+  const onImportanceChange = (e) => {
+    setInputValues((current) => ({
+      ...current,
+      importance: e.target.value,
+    }))
+  }
+
+  const submitCurrentValues = () => {
+    const task = {
+      id: ++lastId,
+      description: inputValues.description,
+      urgency: inputValues.urgency,
+      importance: inputValues.importance,
+    }
+
+    setTasks((currentTasks) => [...currentTasks, task])
+  }
+
+  const deleteTask = (taskId) => {
+    setTasks((currentTasks) => currentTasks.filter((task) => task.id != taskId))
+  }
+
+  const resetInputs = () => {
+    setInputValues({
+      description: '',
+      urgency: 0,
+      importance: 0,
+    })
+  }
+
+  const clearAll = () => {
+    resetInputs()
+    setTasks([])
+  }
+
   return (
     <>
       <PageHeader
@@ -8,13 +68,14 @@ const HomePage = () => {
         description="Proritize your tasks based on a decision framewok based on The Eisenhower Matrix."
         moreInfoLabel="How it works"
         moreInfoURL="#"
-      >
-        <button>Clear task list</button>
-      </PageHeader>
+      ></PageHeader>
 
       <main>
+        <header>
+          <h2>Your task list</h2>
+          <button onClick={clearAll}>Clear task list</button>
+        </header>
         <table>
-          <caption hidden>Your task list</caption>
           <thead>
             <tr>
               <th className="id" scope="col">
@@ -35,18 +96,61 @@ const HomePage = () => {
             </tr>
           </thead>
           <tbody>
+            {tasks.map((task) => (
+              <tr key={task.id}>
+                <td className="id">{task.id}</td>
+                <td className="description">{task.description}</td>
+                <td className="urgency">{task.urgency}</td>
+                <td className="importance">{task.importance}</td>
+                <td className="actions">
+                  <button onClick={() => deleteTask(task.id)}>
+                    Delete task
+                  </button>
+                </td>
+              </tr>
+            ))}
             <tr>
-              <td className="id">1</td>
-              <td className="description">Make this page awesome</td>
-              <td className="urgency">9</td>
-              <td className="importance">4</td>
-              <td className="actions">
-                <button>Remove task</button>
+              <td className="id">{lastId + 1}</td>
+              <td className="description">
+                <input
+                  value={inputValues.description}
+                  onChange={onDescriptionChange}
+                  type="text"
+                />
+              </td>
+              <td className="urgency">
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  value={inputValues.urgency}
+                  onChange={onUrgencyChange}
+                />
+              </td>
+              <td className="importance">
+                <input
+                  type="number"
+                  min="0"
+                  max="10"
+                  value={inputValues.importance}
+                  onChange={onImportanceChange}
+                />
               </td>
             </tr>
           </tbody>
         </table>
+        <button
+          className="btn-new-task"
+          onClick={() => {
+            submitCurrentValues()
+            resetInputs()
+          }}
+        >
+          + Add new task
+        </button>
       </main>
+
+      <button className="btn-submit">Compute priority ranking</button>
     </>
   )
 }
