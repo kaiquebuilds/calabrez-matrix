@@ -2,14 +2,14 @@ import { useState } from 'react'
 import Task from '../../models/Task'
 
 import { PrimaryButton, DangerButton } from '../Buttons'
-import { TextTableDataInput, NumberTableDataInput } from '../TableDataInputs/'
+import { TextTableDataInput, NumberTableDataInput } from '../TableDataInputs'
 
 interface NewTaskTableRowProps {
   onSubmit: (task: Task) => void
   onCancel: () => void
 }
 
-const NewTaskTableRow = ({ onSubmit, onCancel }: NewTaskTableRowProps) => {
+const NewTaskRow = ({ onSubmit, onCancel }: NewTaskTableRowProps) => {
   const [description, setDescription] = useState('')
   const [urgency, setUrgency] = useState(0)
   const [importance, setImportance] = useState(0)
@@ -44,4 +44,4 @@ const NewTaskTableRow = ({ onSubmit, onCancel }: NewTaskTableRowProps) => {
   )
 }
 
-export default NewTaskTableRow
+export default NewTaskRow

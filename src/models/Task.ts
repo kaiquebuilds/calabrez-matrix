@@ -16,10 +16,3 @@ export default class Task {
     this.importance = importance
   }
 }
-
-export enum TaskPropsEnum {
-  ID = 'id',
-  DESCRIPTION = 'description',
-  URGENCY = 'urgency',
-  IMPORTANCE = 'importance',
-}

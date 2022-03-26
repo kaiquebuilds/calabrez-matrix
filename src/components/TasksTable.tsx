@@ -2,71 +2,99 @@ import { useState } from 'react'
 import Task from '../models/Task'
 
 import { SecondaryButton } from './Buttons'
-import {
-  EditingTaskTableRow,
-  TaskTableRow,
-  NewTaskTableRow,
-} from './TaskTableRows'
+import { EditingTaskRow, TaskRow, NewTaskRow } from './TaskRows'
 
 let lastAssignedId = 4
 
-type Row = {
+interface TaskRow extends Task {
   isBeingEdited: boolean
-  task: Task
 }
 
 const TasksTable = () => {
-  const [rows, setRows] = useState<Row[]>([
+  const [taskRows, setTaskRows] = useState<TaskRow[]>([
     {
       isBeingEdited: false,
-      task: {
-        id: 1,
-        description: 'Task description 1',
-        importance: 8,
-        urgency: 6,
-      },
-    },
-    {
-      isBeingEdited: true,
-      task: {
-        id: 2,
-        description: 'Task description 2',
-        importance: 3,
-        urgency: 8,
-      },
+      id: 1,
+      description: 'Task description 1',
+      importance: 8,
+      urgency: 6,
     },
     {
       isBeingEdited: false,
-      task: {
-        id: 3,
-        description: 'Task description 3',
-        importance: 1,
-        urgency: 2,
-      },
+      id: 2,
+      description: 'Task description 2',
+      importance: 3,
+      urgency: 8,
     },
     {
       isBeingEdited: false,
-      task: {
-        id: 4,
-        description: 'Task description 4',
-        importance: 5,
-        urgency: 1,
-      },
+      id: 3,
+      description: 'Task description 3',
+      importance: 1,
+      urgency: 2,
+    },
+    {
+      isBeingEdited: false,
+      id: 4,
+      description: 'Task description 4',
+      importance: 5,
+      urgency: 1,
     },
   ])
   const [showNewTaskRow, setShowNewTaskRow] = useState(false)
 
-  const addNewRow = (task: Task) => {
+  const addNewTaskRow = (task: Task) => {
     task.id = ++lastAssignedId
-    setRows((currentRows) => [...currentRows, { isBeingEdited: false, task }])
+    setTaskRows((currentTaskRows) => [
+      ...currentTaskRows,
+      { isBeingEdited: false, ...task },
+    ])
     setShowNewTaskRow(false)
+  }
+
+  const updateTaskRow = (updatedTask: Task) => {
+    setTaskRows((currentRows) => {
+      const taskRowIndex = currentRows.findIndex(
+        (_row) => _row.id === updatedTask.id
+      )
+      const newTaskRows = [...currentRows]
+      newTaskRows[taskRowIndex] = { ...updatedTask, isBeingEdited: false }
+      return newTaskRows
+    })
+  }
+
+  const toggleTaskRowEdit = (taskRow: TaskRow) => {
+    setTaskRows((currentTaskRows) => {
+      const taskRowIndex = currentTaskRows.findIndex(
+        (_taskRow) => _taskRow.id === taskRow.id
+      )
+      currentTaskRows[taskRowIndex] = {
+        ...taskRow,
+        isBeingEdited: !taskRow.isBeingEdited,
+      }
+      return [...currentTaskRows]
+    })
+  }
+
+  const deleteTaskRow = (taskRow: TaskRow) => {
+    setTaskRows((currentTaskRows) => {
+      const taskRowIndex = currentTaskRows.findIndex(
+        (_taskRow) => _taskRow.id === taskRow.id
+      )
+      const newTaskRows = currentTaskRows
+        .slice(0, taskRowIndex)
+        .concat(currentTaskRows.slice(taskRowIndex + 1))
+      return newTaskRows
+    })
   }
 
   return (
     <section className="table-container">
       <header>
         <h2>Your task list</h2>
-        <SecondaryButton>Clear task list</SecondaryButton>
+        <SecondaryButton onClick={() => setTaskRows([])}>
+          Clear task list
+        </SecondaryButton>
       </header>
       <table>
         <thead>
@@ -89,16 +117,26 @@ const TasksTable = () => {
           </tr>
         </thead>
         <tbody>
-          {rows.map((row) => {
-            return row.isBeingEdited ? (
-              <EditingTaskTableRow key={row.task.id} task={row.task} />
+          {taskRows.map((taskRow) => {
+            return taskRow.isBeingEdited ? (
+              <EditingTaskRow
+                key={taskRow.id}
+                task={taskRow}
+                onSubmit={updateTaskRow}
+                onCancelEdit={() => toggleTaskRowEdit(taskRow)}
+              />
             ) : (
-              <TaskTableRow key={row.task.id} task={row.task} />
+              <TaskRow
+                key={taskRow.id}
+                task={taskRow}
+                onEdit={() => toggleTaskRowEdit(taskRow)}
+                onDelete={() => deleteTaskRow(taskRow)}
+              />
             )
           })}
           {showNewTaskRow && (
-            <NewTaskTableRow
-              onSubmit={addNewRow}
+            <NewTaskRow
+              onSubmit={addNewTaskRow}
               onCancel={() => setShowNewTaskRow(false)}
             />
           )}
