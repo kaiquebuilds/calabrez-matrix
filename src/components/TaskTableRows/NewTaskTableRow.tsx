@@ -1,17 +1,25 @@
 import { useState } from 'react'
+import Task from '../../models/Task'
 
 import { PrimaryButton, DangerButton } from '../Buttons'
 import { TextTableDataInput, NumberTableDataInput } from '../TableDataInputs/'
 
-const NewTaskTableRow = () => {
+interface NewTaskTableRowProps {
+  onSubmit: (task: Task) => void
+  onCancel: () => void
+}
+
+const NewTaskTableRow = ({ onSubmit, onCancel }: NewTaskTableRowProps) => {
   const [description, setDescription] = useState('')
   const [urgency, setUrgency] = useState(0)
   const [importance, setImportance] = useState(0)
 
-  // TODO: Validate input values
+  const createTaskClickHandler = () => {
+    onSubmit(new Task(undefined, description, urgency, importance))
+  }
 
   return (
-    <tr>
+    <tr className="create-task-row">
       <td className="id">-</td>
       <TextTableDataInput
         value={description}
@@ -29,8 +37,8 @@ const NewTaskTableRow = () => {
         className="importance"
       />
       <td className="actions">
-        <PrimaryButton>Create</PrimaryButton>
-        <DangerButton>Cancel</DangerButton>
+        <PrimaryButton onClick={createTaskClickHandler}>Create</PrimaryButton>
+        <DangerButton onClick={onCancel}>Cancel</DangerButton>
       </td>
     </tr>
   )

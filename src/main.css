@@ -140,3 +140,7 @@ td.actions {
   justify-content: center;
   gap: 0.5rem;
 }
+
+.create-task-row {
+  background-color: #f8f8f8;
+}

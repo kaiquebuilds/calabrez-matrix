@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Task from '../models/Task'
 
 import { SecondaryButton } from './Buttons'
 import {
@@ -7,49 +8,59 @@ import {
   NewTaskTableRow,
 } from './TaskTableRows'
 
-const rows = [
-  {
-    isBeingEdited: false,
-    task: {
-      id: 1,
-      description: 'Task description 1',
-      importance: 8,
-      urgency: 6,
-    },
-  },
-  {
-    isBeingEdited: true,
-    task: {
-      id: 2,
-      description: 'Task description 2',
-      importance: 3,
-      urgency: 8,
-    },
-  },
-  {
-    isBeingEdited: false,
-    task: {
-      id: 3,
-      description: 'Task description 3',
-      importance: 1,
-      urgency: 2,
-    },
-  },
-  {
-    isBeingEdited: false,
-    task: {
-      id: 4,
-      description: 'Task description 4',
-      importance: 5,
-      urgency: 1,
-    },
-  },
-]
+let lastAssignedId = 4
+
+type Row = {
+  isBeingEdited: boolean
+  task: Task
+}
 
 const TasksTable = () => {
+  const [rows, setRows] = useState<Row[]>([
+    {
+      isBeingEdited: false,
+      task: {
+        id: 1,
+        description: 'Task description 1',
+        importance: 8,
+        urgency: 6,
+      },
+    },
+    {
+      isBeingEdited: true,
+      task: {
+        id: 2,
+        description: 'Task description 2',
+        importance: 3,
+        urgency: 8,
+      },
+    },
+    {
+      isBeingEdited: false,
+      task: {
+        id: 3,
+        description: 'Task description 3',
+        importance: 1,
+        urgency: 2,
+      },
+    },
+    {
+      isBeingEdited: false,
+      task: {
+        id: 4,
+        description: 'Task description 4',
+        importance: 5,
+        urgency: 1,
+      },
+    },
+  ])
   const [showNewTaskRow, setShowNewTaskRow] = useState(false)
 
-  // TODO: After saving a new task, setShowNewTaskRow to false
+  const addNewRow = (task: Task) => {
+    task.id = ++lastAssignedId
+    setRows((currentRows) => [...currentRows, { isBeingEdited: false, task }])
+    setShowNewTaskRow(false)
+  }
 
   return (
     <section className="table-container">
@@ -85,7 +96,12 @@ const TasksTable = () => {
               <TaskTableRow key={row.task.id} task={row.task} />
             )
           })}
-          {showNewTaskRow && <NewTaskTableRow />}
+          {showNewTaskRow && (
+            <NewTaskTableRow
+              onSubmit={addNewRow}
+              onCancel={() => setShowNewTaskRow(false)}
+            />
+          )}
         </tbody>
       </table>
 
