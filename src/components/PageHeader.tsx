@@ -1,10 +1,16 @@
+interface PageHeaderProps {
+  title: string
+  description: string
+  moreInfoLabel: string
+  moreInfoURL: string
+}
+
 const PageHeader = ({
   title,
   description,
   moreInfoLabel,
   moreInfoURL,
-  children,
-}) => {
+}: PageHeaderProps) => {
   return (
     <header className="page_header">
       <div className="info">
@@ -12,7 +18,6 @@ const PageHeader = ({
         <p>{description}</p>
         <a href={moreInfoURL}>{moreInfoLabel}</a>
       </div>
-      <div className="actions">{children}</div>
     </header>
   )
 }
