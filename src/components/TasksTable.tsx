@@ -49,6 +49,8 @@ const rows = [
 const TasksTable = () => {
   const [showNewTaskRow, setShowNewTaskRow] = useState(false)
 
+  // TODO: After saving a new task, setShowNewTaskRow to false
+
   return (
     <section className="table-container">
       <header>
@@ -87,7 +89,11 @@ const TasksTable = () => {
         </tbody>
       </table>
 
-      {!showNewTaskRow && <SecondaryButton>+ Add new task</SecondaryButton>}
+      {!showNewTaskRow && (
+        <SecondaryButton onClick={() => setShowNewTaskRow(true)}>
+          + Add new task
+        </SecondaryButton>
+      )}
     </section>
   )
 }
