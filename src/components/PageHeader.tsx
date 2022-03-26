@@ -12,7 +12,7 @@ const PageHeader = ({
   moreInfoURL,
 }: PageHeaderProps) => {
   return (
-    <header className="page_header">
+    <header className="page-header">
       <div className="info">
         <h1>{title}</h1>
         <p>{description}</p>
