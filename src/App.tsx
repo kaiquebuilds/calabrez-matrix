@@ -6,12 +6,6 @@ import ResultsPage from './pages/ResultsPage'
 const App = () => {
   const [tasks, setTasks] = useState([
     {
-      id: 1,
-      description: 'Task description 1',
-      importance: 8,
-      urgency: 6,
-    },
-    {
       id: 2,
       description: 'Task description 2',
       importance: 9,
@@ -22,6 +16,12 @@ const App = () => {
       description: 'Task description 3',
       importance: 3,
       urgency: 7,
+    },
+    {
+      id: 999,
+      description: 'Task description 1',
+      importance: 8,
+      urgency: 6,
     },
     {
       id: 4,

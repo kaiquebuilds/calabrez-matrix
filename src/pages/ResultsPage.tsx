@@ -98,6 +98,50 @@ const ResultsPage: React.FC<IResultsPageProps> = ({ tasks, onGoBack }) => {
         </SecondaryButton>
       </PageHeader>
 
+      <section className="table-container">
+        <header>
+          <h2>Priority ratings</h2>
+        </header>
+        <table>
+          <thead>
+            <tr>
+              <th className="priority" scope="col">
+                Suggested priority
+              </th>
+              <th className="priority-rating" scope="col">
+                Priority rating
+              </th>
+              <th className="id" scope="col">
+                Task id
+              </th>
+              <th className="description" scope="col">
+                Task description
+              </th>
+              <th className="urgency" scope="col">
+                Urgency rating
+              </th>
+              <th className="importance" scope="col">
+                Importance rating
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks
+              .sort((a, b) => b.priority - a.priority)
+              .map((task, index) => (
+                <tr key={task.id}>
+                  <td className="priority">{index + 1}</td>
+                  <td className="priority-rating">{task.priority}</td>
+                  <td className="id">{task.id}</td>
+                  <td className="description">{task.description}</td>
+                  <td className="urgency">{task.urgency}</td>
+                  <td className="importance">{task.importance}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </section>
+
       <section>
         <header>
           <h2>Matrix</h2>

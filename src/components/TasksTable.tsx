@@ -83,7 +83,7 @@ const TasksTable: React.FC<PropsWithChildren<ITasksTableProps>> = ({
   }
 
   return (
-    <section className="table-container">
+    <section className="tasks-table table-container">
       <header>
         <h2>Your task list</h2>
         <SecondaryButton onClick={() => setTaskRows([])}>
