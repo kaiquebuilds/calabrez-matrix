@@ -1,6 +1,6 @@
 # Calabrez Matrix App
 
-The Calabrez Matrix is a task prioritization framework createt by [Prof. Pedro Calabrez](https://www.pedrocalabrez.com.br/), based on [The Eisenhower Method/Matrix](https://en.wikipedia.org/wiki/Time_management#The_Eisenhower_Method) time-management method.
+The Calabrez Matrix is a task prioritization framework created by [Prof. Pedro Calabrez](https://www.pedrocalabrez.com.br/), based on [The Eisenhower Method/Matrix](https://en.wikipedia.org/wiki/Time_management#The_Eisenhower_Method) time-management method.
 
 ## Motivation
 
