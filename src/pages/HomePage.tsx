@@ -1,8 +1,13 @@
-import { PrimaryButton } from '../components/Buttons'
 import PageHeader from '../components/PageHeader'
 import TasksTable from '../components/TasksTable'
+import Task from '../models/Task'
 
-const HomePage = () => {
+interface IHomePageProps {
+  tasks: Task[]
+  onSubmitTasks: (tasks: Task[]) => void
+}
+
+const HomePage: React.FC<IHomePageProps> = ({ tasks, onSubmitTasks }) => {
   return (
     <>
       <PageHeader
@@ -12,11 +17,7 @@ const HomePage = () => {
         moreInfoURL="#"
       />
 
-      <TasksTable />
-
-      <footer className="page-footer">
-        <PrimaryButton>Compute priority ranking</PrimaryButton>
-      </footer>
+      <TasksTable tasks={tasks} onSubmitTasks={onSubmitTasks} />
     </>
   )
 }

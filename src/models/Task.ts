@@ -3,6 +3,7 @@ export default class Task {
   description: string
   urgency: number
   importance: number
+  priority?: number
 
   constructor(
     id: number,

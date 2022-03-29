@@ -1,7 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, PropsWithChildren } from 'react'
 import Task from '../models/Task'
 
-import { SecondaryButton } from './Buttons'
+import { PrimaryButton, SecondaryButton } from './Buttons'
 import { EditingTaskRow, TaskRow, NewTaskRow } from './TaskRows'
 
 let lastAssignedId = 4
@@ -9,39 +9,33 @@ let lastAssignedId = 4
 interface TaskRow extends Task {
   isBeingEdited: boolean
 }
+interface ITasksTableProps {
+  tasks: Task[]
+  onSubmitTasks: (tasks: Task[]) => void
+}
 
-const TasksTable = () => {
-  const [taskRows, setTaskRows] = useState<TaskRow[]>([
-    {
+const TasksTable: React.FC<PropsWithChildren<ITasksTableProps>> = ({
+  tasks,
+  onSubmitTasks,
+}) => {
+  const [taskRows, setTaskRows] = useState<TaskRow[]>(() => {
+    return tasks.map((task) => ({
+      id: task.id,
+      description: task.description,
+      importance: task.importance,
+      urgency: task.urgency,
       isBeingEdited: false,
-      id: 1,
-      description: 'Task description 1',
-      importance: 8,
-      urgency: 6,
-    },
-    {
-      isBeingEdited: false,
-      id: 2,
-      description: 'Task description 2',
-      importance: 3,
-      urgency: 8,
-    },
-    {
-      isBeingEdited: false,
-      id: 3,
-      description: 'Task description 3',
-      importance: 1,
-      urgency: 2,
-    },
-    {
-      isBeingEdited: false,
-      id: 4,
-      description: 'Task description 4',
-      importance: 5,
-      urgency: 1,
-    },
-  ])
+    }))
+  })
   const [showNewTaskRow, setShowNewTaskRow] = useState(false)
+
+  const submitClickHandler = () => {
+    onSubmitTasks(
+      taskRows.map((taskRow) => ({
+        ...taskRow,
+      }))
+    )
+  }
 
   const addNewTaskRow = (task: Task) => {
     task.id = ++lastAssignedId
@@ -148,6 +142,11 @@ const TasksTable = () => {
           + Add new task
         </SecondaryButton>
       )}
+      <div className="page-footer">
+        <PrimaryButton onClick={submitClickHandler}>
+          Compute priority ranking
+        </PrimaryButton>
+      </div>
     </section>
   )
 }
